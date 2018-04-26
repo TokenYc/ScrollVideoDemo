@@ -160,6 +160,7 @@ public class QFRecyclerActivity extends AppCompatActivity {
             itemViewHolder.videoView.setTag("position--->" + position);
             itemViewHolder.sdvCover.setImageURI(videoList[position].getCover());
             itemViewHolder.sdvCover.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+            itemViewHolder.sdvCover.getHierarchy().setFadeDuration(0);
             itemViewHolder.videoView.showCover();
             if (position == 0 && isFirstPlay) {
                 itemViewHolder.videoView.setVideoUrl(videoList[position].getVideo());

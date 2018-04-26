@@ -87,25 +87,35 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         Log.d(tag, "prepared----->" + getTag());
         adjustSize();
-        if (mViewCover != null) {
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mViewCover.setVisibility(GONE);
-                }
-            }, 100);
-        }
+//        if (mViewCover != null) {
+//            postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mViewCover.setVisibility(GONE);
+//                }
+//            }, 150);
+//        }
     }
 
     @Override
     public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
-//        Log.d(tag, "onInfo i----->" + i + "\t" + getTag());
+        Log.d(tag, "onInfo i----->" + i + "\t" + getTag());
 
         if (i == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED) {
             //这里返回了视频旋转的角度，根据角度旋转视频到正确的画面
             if (mTextureView != null) {
                 mTextureView.setRotation(i1);
             }
+        } else if (i == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+//            if (mViewCover != null) {
+//                postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mViewCover.setVisibility(GONE);
+//                    }
+//                },100);
+//            }
+            mViewCover.setVisibility(GONE);
         }
         return false;
     }
@@ -124,7 +134,7 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
         addView(view);
         LayoutParams lp = (LayoutParams) view.getLayoutParams();
         lp.gravity = Gravity.CENTER;
-        mViewCover.setVisibility(GONE);
+//        mViewCover.setVisibility(GONE);
     }
 
     public void loop() {
@@ -150,15 +160,6 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
         if (!mMediaPlayer.isPlaying()) {
             mMediaPlayer.start();
         }
-        if (mViewCover != null) {
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mViewCover.setVisibility(GONE);
-                }
-            }, 100);
-        }
-
     }
 
     public void pause() {
@@ -167,7 +168,7 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
         }
     }
 
-    public void showCover(){
+    public void showCover() {
         if (mViewCover != null) {
             mViewCover.setVisibility(VISIBLE);
         }
