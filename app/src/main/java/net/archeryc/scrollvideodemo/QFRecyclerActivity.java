@@ -87,6 +87,7 @@ public class QFRecyclerActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private MyAdapter adapter;
     private HttpProxyCacheServer mProxyCacheServer;
+    private QfVideoView mCurrentVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class QFRecyclerActivity extends AppCompatActivity {
                                     holder.videoView.setVideoUrl(videoList[firstVisibleItemPosition].getVideo());
                                     holder.videoView.loop();
                                     holder.videoView.prepareAsync();
+                                    mCurrentVideoView = holder.videoView;
                                 }
                             } else {
                                 holder.videoView.reset();
@@ -134,12 +136,29 @@ public class QFRecyclerActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCurrentVideoView != null && mCurrentVideoView.isPlaying()) {
+            mCurrentVideoView.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mCurrentVideoView != null && !mCurrentVideoView.isPlaying()) {
+            mCurrentVideoView.start();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         for (MyAdapter.ItemViewHolder viewHolder : adapter.getHolders()) {
             viewHolder.videoView.release();
         }
     }
+
 
     class MyAdapter extends RecyclerView.Adapter {
 
@@ -166,6 +185,7 @@ public class QFRecyclerActivity extends AppCompatActivity {
                 itemViewHolder.videoView.setVideoUrl(videoList[position].getVideo());
                 itemViewHolder.videoView.loop();
                 itemViewHolder.videoView.getMediaPlayer().prepareAsync();
+                mCurrentVideoView = itemViewHolder.videoView;
             }
             holders.add(itemViewHolder);
         }
@@ -200,5 +220,6 @@ public class QFRecyclerActivity extends AppCompatActivity {
             return holders;
         }
     }
+
 
 }
