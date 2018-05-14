@@ -124,8 +124,14 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
     public void setVideoUrl(String url) {
         try {
             mMediaPlayer.setDataSource(mProxyCacheServer.getProxyUrl(url));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            reset();
+            try {
+                mMediaPlayer.setDataSource(mProxyCacheServer.getProxyUrl(url));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

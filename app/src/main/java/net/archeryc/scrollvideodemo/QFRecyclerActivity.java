@@ -21,80 +21,33 @@ import java.util.List;
 
 public class QFRecyclerActivity extends AppCompatActivity {
 
-    private String[] videoUrls = {
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0",
-            "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0",
-    };
 
-    private VideoEntity[] videoList = {
-            new VideoEntity("https://p3.pstatp.com/large/5f7c000eab738b7dc8cb.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0"),
-            new VideoEntity("https://p1.pstatp.com/large/76e10008ac581c53a584.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/76de00045e6b998349cd.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/7c15000c2b833ffb7084.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/6af70002d4c2c66a6595.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/5f7c000eab738b7dc8cb.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0"),
-            new VideoEntity("https://p1.pstatp.com/large/76e10008ac581c53a584.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/76de00045e6b998349cd.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/7c15000c2b833ffb7084.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/6af70002d4c2c66a6595.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/5f7c000eab738b7dc8cb.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0"),
-            new VideoEntity("https://p1.pstatp.com/large/76e10008ac581c53a584.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/76de00045e6b998349cd.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/7c15000c2b833ffb7084.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0"),
-            new VideoEntity("https://p3.pstatp.com/large/6af70002d4c2c66a6595.jpg",
-                    "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0"),
-    };
+    List<VideoEntity> mMockData = new ArrayList<>();
 
     private RecyclerView recyclerView;
 
     private LinearLayoutManager layoutManager;
     private MyAdapter adapter;
-    private HttpProxyCacheServer mProxyCacheServer;
     private QfVideoView mCurrentVideoView;
+
+    private boolean mIsLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
 
-        mProxyCacheServer = new HttpProxyCacheServer(this);
+        mMockData.add(new VideoEntity("https://p3.pstatp.com/large/5f7c000eab738b7dc8cb.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0"));
+        mMockData.add(new VideoEntity("https://p1.pstatp.com/large/76e10008ac581c53a584.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0"));
+        mMockData.add(new VideoEntity("https://p3.pstatp.com/large/76de00045e6b998349cd.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0"));
+        mMockData.add(new VideoEntity("https://p3.pstatp.com/large/7c15000c2b833ffb7084.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5de5b22a25ef48a78847c26185099bdb&line=0"));
+        mMockData.add(new VideoEntity("https://p3.pstatp.com/large/6af70002d4c2c66a6595.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0"));
+
         adapter = new MyAdapter();
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this);
@@ -113,7 +66,7 @@ public class QFRecyclerActivity extends AppCompatActivity {
                         for (final MyAdapter.ItemViewHolder holder : viewHolders) {
                             if (holder.equals(recyclerView.findViewHolderForAdapterPosition(firstVisibleItemPosition))) {
                                 if (!holder.videoView.isPlaying()) {
-                                    holder.videoView.setVideoUrl(videoList[firstVisibleItemPosition].getVideo());
+                                    holder.videoView.setVideoUrl(adapter.getDatas().get(firstVisibleItemPosition).getVideo());
                                     holder.videoView.loop();
                                     holder.videoView.prepareAsync();
                                     mCurrentVideoView = holder.videoView;
@@ -125,14 +78,44 @@ public class QFRecyclerActivity extends AppCompatActivity {
                         }
                     }
 //                    Log.d("position", "first---->" + firstVisibleItemPosition + "last---->" + lastVisibleItemPosition);
+
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if (!mIsLoading && dy > 0) {
+                    int lastVisiableItemPosition = layoutManager.findLastVisibleItemPosition();
+                    if (adapter.getItemCount() - lastVisiableItemPosition < 2) {
+                        getData();
+                    }
+                }
             }
         });
+
+        getData();
+    }
+
+    private void getData() {
+        setIsLoading(true);
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int insertPosition = adapter.getItemCount();
+                adapter.addData(mMockData);
+                adapter.notifyItemRangeInserted(insertPosition, mMockData.size());
+                setIsLoading(false);
+            }
+        }, 1000);
+    }
+
+    private void setIsLoading(boolean isLoading) {
+        mIsLoading = isLoading;
+    }
+
+    private boolean getIsLoading() {
+        return mIsLoading;
     }
 
     @Override
@@ -162,6 +145,8 @@ public class QFRecyclerActivity extends AppCompatActivity {
 
     class MyAdapter extends RecyclerView.Adapter {
 
+        private List<VideoEntity> mDatas = new ArrayList<>();
+
         private List<MyAdapter.ItemViewHolder> holders = new ArrayList<>();
 
         private boolean isFirstPlay = true;
@@ -177,12 +162,12 @@ public class QFRecyclerActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             MyAdapter.ItemViewHolder itemViewHolder = (MyAdapter.ItemViewHolder) holder;
             itemViewHolder.videoView.setTag("position--->" + position);
-            itemViewHolder.sdvCover.setImageURI(videoList[position].getCover());
+            itemViewHolder.sdvCover.setImageURI(mDatas.get(position).getCover());
             itemViewHolder.sdvCover.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
             itemViewHolder.sdvCover.getHierarchy().setFadeDuration(0);
             itemViewHolder.videoView.showCover();
             if (position == 0 && isFirstPlay) {
-                itemViewHolder.videoView.setVideoUrl(videoList[position].getVideo());
+                itemViewHolder.videoView.setVideoUrl(mDatas.get(position).getVideo());
                 itemViewHolder.videoView.loop();
                 itemViewHolder.videoView.getMediaPlayer().prepareAsync();
                 mCurrentVideoView = itemViewHolder.videoView;
@@ -201,7 +186,15 @@ public class QFRecyclerActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return videoList.length;
+            return mDatas.size();
+        }
+
+        public void addData(List<VideoEntity> videoList) {
+            mDatas.addAll(videoList);
+        }
+
+        public List<VideoEntity> getDatas() {
+            return mDatas;
         }
 
         class ItemViewHolder extends RecyclerView.ViewHolder {
