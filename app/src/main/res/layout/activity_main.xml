@@ -45,4 +45,11 @@
         android:layout_height="wrap_content"
         android:onClick="jumpGSYRecycler"
         android:text="gsy recyclerView 实现" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义layoutManager实现"
+        android:onClick="jumpLayoutManager"
+        />
 </LinearLayout>

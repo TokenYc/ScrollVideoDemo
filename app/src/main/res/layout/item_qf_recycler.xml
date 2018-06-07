@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
+
     <net.archeryc.scrollvideodemo.widget.QfVideo.QfVideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
 </RelativeLayout>

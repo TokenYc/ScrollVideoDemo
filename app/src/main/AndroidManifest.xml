@@ -29,7 +29,8 @@
         <activity android:name=".SinglePLActivity" />
         <activity android:name=".SingleQFActivity" />
         <activity android:name=".QFRecyclerActivity" />
-        <activity android:name=".SingleIJKActivity"/>
+        <activity android:name=".SingleIJKActivity" />
+        <activity android:name=".LayoutManagerActivity"></activity>
     </application>
 
 </manifest>

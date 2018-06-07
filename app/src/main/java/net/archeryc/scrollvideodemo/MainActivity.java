@@ -45,14 +45,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public void jumpSinglePL(View view){
-        Intent intent=new Intent(this,SinglePLActivity.class);
+    public void jumpSinglePL(View view) {
+        Intent intent = new Intent(this, SinglePLActivity.class);
         startActivity(intent);
     }
 
-    public void jumpSingleQF(View view){
-        Intent intent=new Intent(this,SingleQFActivity.class);
+    public void jumpSingleQF(View view) {
+        Intent intent = new Intent(this, SingleQFActivity.class);
         startActivity(intent);
     }
 
@@ -61,9 +60,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void jumpQFRecycler(View view){
-        Intent intent=new Intent(this,QFRecyclerActivity.class);
+    public void jumpQFRecycler(View view) {
+        Intent intent = new Intent(this, QFRecyclerActivity.class);
         startActivity(intent);
     }
 
+    public void jumpLayoutManager(View view) {
+        Intent intent = new Intent(this, LayoutManagerActivity.class);
+        startActivity(intent);
+    }
 }
