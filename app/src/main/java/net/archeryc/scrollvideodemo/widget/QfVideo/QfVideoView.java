@@ -87,14 +87,6 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         Log.d(tag, "prepared----->" + getTag());
         adjustSize();
-//        if (mViewCover != null) {
-//            postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mViewCover.setVisibility(GONE);
-//                }
-//            }, 150);
-//        }
     }
 
     @Override
@@ -107,15 +99,7 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
                 mTextureView.setRotation(i1);
             }
         } else if (i == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
-//            if (mViewCover != null) {
-//                postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mViewCover.setVisibility(GONE);
-//                    }
-//                },100);
-//            }
-            mViewCover.setVisibility(GONE);
+            mViewCover.animate().alpha(0).setDuration(200).start();
         }
         return false;
     }
@@ -176,7 +160,7 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
 
     public void showCover() {
         if (mViewCover != null) {
-            mViewCover.setVisibility(VISIBLE);
+            mViewCover.animate().setDuration(200).alpha(1).start();
         }
     }
 
@@ -184,9 +168,7 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
         }
-        if (mViewCover != null) {
-            mViewCover.setVisibility(VISIBLE);
-        }
+        showCover();
     }
 
     public void stop() {
@@ -224,4 +206,16 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+//        reset();
+//        release();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        System.out.println("videoView onAttachedToWindow");
+    }
 }

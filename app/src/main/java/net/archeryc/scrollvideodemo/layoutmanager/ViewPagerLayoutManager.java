@@ -68,22 +68,11 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
                 View viewSettling = mPagerSnapHelper.findSnapView(this);
                 int positionSettling = getPosition(viewSettling);
                 break;
-
+            default:
+                break;
         }
     }
 
-    /**
-     * 布局完成后调用
-     *
-     * @param state
-     */
-    @Override
-    public void onLayoutCompleted(RecyclerView.State state) {
-        super.onLayoutCompleted(state);
-        if (mOnViewPagerListener != null) {
-            mOnViewPagerListener.onLayoutComplete();
-        }
-    }
 
     /**
      * 监听竖直方向的相对偏移量
@@ -126,17 +115,21 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
     private RecyclerView.OnChildAttachStateChangeListener mChildAttachStateChangeListener = new RecyclerView.OnChildAttachStateChangeListener() {
         @Override
         public void onChildViewAttachedToWindow(View view) {
-
+            if (mOnViewPagerListener != null && getChildCount() == 1) {
+                mOnViewPagerListener.onInitComplete();
+            }
         }
 
         @Override
         public void onChildViewDetachedFromWindow(View view) {
             if (mDrift >= 0) {
-                if (mOnViewPagerListener != null)
+                if (mOnViewPagerListener != null) {
                     mOnViewPagerListener.onPageRelease(true, getPosition(view));
+                }
             } else {
-                if (mOnViewPagerListener != null)
+                if (mOnViewPagerListener != null) {
                     mOnViewPagerListener.onPageRelease(false, getPosition(view));
+                }
             }
 
         }

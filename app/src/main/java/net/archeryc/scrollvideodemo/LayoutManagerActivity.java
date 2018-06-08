@@ -15,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import net.archeryc.scrollvideodemo.layoutmanager.OnViewPagerListener;
 import net.archeryc.scrollvideodemo.layoutmanager.ViewPagerLayoutManager;
 import net.archeryc.scrollvideodemo.widget.QfVideo.QfVideoView;
+import net.archeryc.scrollvideodemo.widget.ScrollableRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
     static {
         mMockData.add(new VideoEntity("https://p3.pstatp.com/large/5f7c000eab738b7dc8cb.jpg",
                 "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=f1a73c4927e64d2e84b56563134141b8&line=0"));
-        mMockData.add(new VideoEntity("https://p1.pstatp.com/large/76e10008ac581c53a584.jpg",
-                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5a36be93ee5c46b9952f959ba198514b&line=0"));
+        mMockData.add(new VideoEntity("https://p3.pstatp.com/large/8a350006cffb0056e596.jpg",
+                "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bc9ter8858lvukr08fk0&line=0"));
         mMockData.add(new VideoEntity("https://p3.pstatp.com/large/76de00045e6b998349cd.jpg",
                 "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=5d4f6791289645b488b61e41d6db55bd&line=0"));
         mMockData.add(new VideoEntity("https://p3.pstatp.com/large/7c15000c2b833ffb7084.jpg",
@@ -36,7 +37,7 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
                 "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=179c5454de014f80b4bb8e54296dee96&line=0"));
     }
 
-    private RecyclerView recyclerView;
+    private ScrollableRecyclerView recyclerView;
 
     private ViewPagerLayoutManager layoutManager;
 
@@ -54,7 +55,6 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
 
         adapter = new MyAdapter();
         recyclerView.setAdapter(adapter);
-
         getData();
     }
 
@@ -80,21 +80,23 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
     }
 
     @Override
-    public void onLayoutComplete() {
-
+    public void onInitComplete() {
+        playVideo(0);
     }
 
     private void playVideo(int position) {
         MyAdapter.ItemViewHolder itemViewHolder = (MyAdapter.ItemViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
-        itemViewHolder.videoView.setVideoUrl(adapter.getDatas().get(position).getVideo());
-        itemViewHolder.videoView.loop();
-        itemViewHolder.videoView.prepareAsync();
+        if (!itemViewHolder.videoView.isPlaying()) {
+            itemViewHolder.videoView.setVideoUrl(adapter.getDatas().get(position).getVideo());
+            itemViewHolder.videoView.loop();
+            itemViewHolder.videoView.prepareAsync();
+        }
     }
 
     private void releaseVideo(int position) {
         MyAdapter.ItemViewHolder itemViewHolder = (MyAdapter.ItemViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
         itemViewHolder.videoView.stop();
-        itemViewHolder.videoView.reset();
+//        itemViewHolder.videoView.reset();
         itemViewHolder.videoView.showCover();
     }
 
@@ -102,7 +104,6 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
 
         private List<VideoEntity> mDatas = new ArrayList<>();
 
-        private boolean mIsFirstPlay = true;
 
         @NonNull
         @Override
@@ -119,13 +120,6 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
             itemViewHolder.sdvCover.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
             itemViewHolder.sdvCover.getHierarchy().setFadeDuration(0);
             itemViewHolder.videoView.showCover();
-
-            if (position == 0 && mIsFirstPlay) {
-                itemViewHolder.videoView.setVideoUrl(mDatas.get(position).getVideo());
-                itemViewHolder.videoView.loop();
-                itemViewHolder.videoView.prepareAsync();
-                mIsFirstPlay = false;
-            }
         }
 
         @Override
