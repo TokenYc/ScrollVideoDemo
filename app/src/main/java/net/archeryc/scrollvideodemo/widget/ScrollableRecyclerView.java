@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 /**
  * @author ArcherYc
@@ -21,11 +22,14 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
     private GestureDetector gestureDetector;
 
     private float mDownY;
-    private float mLastDelta;
+
+    private int mMaxScrollY = 400;
     /**
      * negative up ,positive down
      */
     private int mDirection = 0;
+
+    private boolean mConsume;
 
     public ScrollableRecyclerView(Context context) {
         this(context, null);
@@ -52,44 +56,36 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        boolean consume = gestureDetector.onTouchEvent(e);
-        if (consume) {
+        mConsume = gestureDetector.onTouchEvent(e);
+        Log.d(tag, "consume--->" + mConsume);
+        if (mConsume) {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mDownY = e.getY();
+                    mDownY = e.getRawY();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    float delta = e.getY() - mDownY;
-                    if (mDirection < 0) {
-                        if (Math.abs(delta) > Math.abs(mLastDelta)) {
-                            setTranslationY(delta);
-                            mLastDelta = delta;
-                        }
-                    } else {
-                        if (Math.abs(delta) < Math.abs(mLastDelta)) {
-                            setTranslationY(delta);
-                            Log.d(tag, "down delta---->" + delta);
-                            mLastDelta = delta;
-                        }
+                    float delta = (e.getRawY() - mDownY)*1f;
+                    Log.d(tag, "delta --->" + delta);
+                    if ( delta <= 0) {
+                        setTranslationY(delta);
+                    }else{
+                        setTranslationY(0);
                     }
-                    Log.d(tag, "delta---->" + delta);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     animate().translationY(0).setDuration(100).start();
-                    mLastDelta = 0;
                     break;
                 default:
                     setTranslationY(0);
-                    mLastDelta = 0;
                     break;
             }
         } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_CANCEL) {
             animate().translationY(0).setDuration(100).start();
-            mLastDelta = 0;
         }
-        return consume || super.onTouchEvent(e);
+        return mConsume || super.onTouchEvent(e);
     }
+
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -108,8 +104,8 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        mDirection = (int) (e2.getY() - e1.getY());
-        if (canScrollVertically(1) || e1.getY() - e2.getY() < 0) {
+        mDirection = (int) (e2.getRawY() - e1.getRawY());
+        if (canScrollVertically(1) || mDirection > 0) {
             Log.d(tag, "onScroll can scroll");
             return !(getTranslationY() == 0);
         } else {
@@ -125,12 +121,7 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        if (canScrollVertically(1) || e1.getY() - e2.getY() < 0) {
-            return !(getTranslationY() == 0);
-        } else {
-            Log.d(tag, "onFling");
-            return true;
-        }
+        return false;
     }
 
 }
