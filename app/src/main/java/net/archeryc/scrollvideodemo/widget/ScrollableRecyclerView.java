@@ -23,13 +23,13 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     private float mDownY;
 
-    private int mMaxScrollY = 400;
+    private  final int mMaxScrollY = 400;
     /**
      * negative up ,positive down
      */
     private int mDirection = 0;
 
-    private boolean mConsume;
+    private boolean mPreventDown = false;
 
     public ScrollableRecyclerView(Context context) {
         this(context, null);
@@ -56,25 +56,29 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        mConsume = gestureDetector.onTouchEvent(e);
-        Log.d(tag, "consume--->" + mConsume);
-        if (mConsume) {
+        boolean consume = gestureDetector.onTouchEvent(e);
+        Log.d(tag, "consume--->" + consume);
+        if (consume) {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mDownY = e.getRawY();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    float delta = (e.getRawY() - mDownY)*1f;
+                    mPreventDown = true;
+
+                    float delta = (e.getRawY() - mDownY) * 1f;
                     Log.d(tag, "delta --->" + delta);
-                    if ( delta <= 0) {
+                    if (Math.abs(delta) < mMaxScrollY) {
                         setTranslationY(delta);
-                    }else{
+                    }
+                    if (delta >= 0) {
                         setTranslationY(0);
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     animate().translationY(0).setDuration(100).start();
+                    mPreventDown = false;
                     break;
                 default:
                     setTranslationY(0);
@@ -82,8 +86,9 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
             }
         } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_CANCEL) {
             animate().translationY(0).setDuration(100).start();
+            mPreventDown = false;
         }
-        return mConsume || super.onTouchEvent(e);
+        return mPreventDown || consume || super.onTouchEvent(e);
     }
 
 
