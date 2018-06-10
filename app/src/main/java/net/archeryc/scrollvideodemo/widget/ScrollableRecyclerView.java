@@ -2,13 +2,11 @@ package net.archeryc.scrollvideodemo.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ViewConfiguration;
 
 /**
  * @author ArcherYc
@@ -21,15 +19,22 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
 
     private GestureDetector gestureDetector;
 
+    private OnLoadMoreListener mLoadMoreListener;
+
     private float mDownY;
 
-    private  final int mMaxScrollY = 400;
+    private final int mMaxScrollY = 400;
     /**
      * negative up ,positive down
      */
     private int mDirection = 0;
 
     private boolean mPreventDown = false;
+
+    /**
+     * has once load from ACTION DOWN to UP or CANCEL
+     */
+    private boolean mIsLoadOnce = false;
 
     public ScrollableRecyclerView(Context context) {
         this(context, null);
@@ -70,6 +75,13 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
                     Log.d(tag, "delta --->" + delta);
                     if (Math.abs(delta) < mMaxScrollY) {
                         setTranslationY(delta);
+                    } else {
+                        if (!mIsLoadOnce) {
+                            if (mLoadMoreListener != null) {
+                                mIsLoadOnce = true;
+                                mLoadMoreListener.onLoadMore();
+                            }
+                        }
                     }
                     if (delta >= 0) {
                         setTranslationY(0);
@@ -79,6 +91,7 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
                 case MotionEvent.ACTION_CANCEL:
                     animate().translationY(0).setDuration(100).start();
                     mPreventDown = false;
+                    mIsLoadOnce = false;
                     break;
                 default:
                     setTranslationY(0);
@@ -87,6 +100,7 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
         } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_CANCEL) {
             animate().translationY(0).setDuration(100).start();
             mPreventDown = false;
+            mIsLoadOnce = false;
         }
         return mPreventDown || consume || super.onTouchEvent(e);
     }
@@ -127,6 +141,17 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
+        this.mLoadMoreListener = listener;
+    }
+
+    public interface OnLoadMoreListener {
+        /**
+         * scroll to the bottom of RecyclerView and load more
+         */
+        void onLoadMore();
     }
 
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -20,7 +21,7 @@ import net.archeryc.scrollvideodemo.widget.ScrollableRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LayoutManagerActivity extends AppCompatActivity implements OnViewPagerListener {
+public class LayoutManagerActivity extends AppCompatActivity implements OnViewPagerListener,ScrollableRecyclerView.OnLoadMoreListener {
 
     static List<VideoEntity> mMockData = new ArrayList<>();
 
@@ -51,6 +52,7 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
         layoutManager = new ViewPagerLayoutManager(this, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        recyclerView.setOnLoadMoreListener(this);
         layoutManager.setOnViewPagerListener(this);
 
         adapter = new MyAdapter();
@@ -67,6 +69,12 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
                 adapter.notifyItemRangeInserted(insertPosition, mMockData.size());
             }
         }, 1000);
+    }
+
+    @Override
+    public void onLoadMore() {
+        Toast.makeText(this, "onLoadMore", Toast.LENGTH_SHORT).show();
+        getData();
     }
 
     @Override
@@ -99,6 +107,8 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
 //        itemViewHolder.videoView.reset();
         itemViewHolder.videoView.showCover();
     }
+
+
 
     class MyAdapter extends RecyclerView.Adapter {
 
