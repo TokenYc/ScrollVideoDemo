@@ -29,6 +29,9 @@ public class ScrollableRecyclerView extends RecyclerView implements GestureDetec
      */
     private int mDirection = 0;
 
+    /**
+     * prevent RecyclerView  content pull down when RecyclerView is loading more
+     */
     private boolean mPreventDown = false;
 
     /**
