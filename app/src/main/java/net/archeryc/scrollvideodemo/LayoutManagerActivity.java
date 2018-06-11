@@ -21,7 +21,7 @@ import net.archeryc.scrollvideodemo.widget.ScrollableRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LayoutManagerActivity extends AppCompatActivity implements OnViewPagerListener,ScrollableRecyclerView.OnLoadMoreListener {
+public class LayoutManagerActivity extends AppCompatActivity implements OnViewPagerListener, ScrollableRecyclerView.OnLoadMoreListener {
 
     static List<VideoEntity> mMockData = new ArrayList<>();
 
@@ -94,7 +94,7 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
 
     private void playVideo(int position) {
         MyAdapter.ItemViewHolder itemViewHolder = (MyAdapter.ItemViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
-        if (!itemViewHolder.videoView.isPlaying()) {
+        if (itemViewHolder.videoView != null && !itemViewHolder.videoView.isPlaying()) {
             itemViewHolder.videoView.setVideoUrl(adapter.getDatas().get(position).getVideo());
             itemViewHolder.videoView.loop();
             itemViewHolder.videoView.prepareAsync();
@@ -103,12 +103,36 @@ public class LayoutManagerActivity extends AppCompatActivity implements OnViewPa
 
     private void releaseVideo(int position) {
         MyAdapter.ItemViewHolder itemViewHolder = (MyAdapter.ItemViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
-        itemViewHolder.videoView.stop();
+        if (itemViewHolder != null) {
+            itemViewHolder.videoView.stop();
 //        itemViewHolder.videoView.reset();
-        itemViewHolder.videoView.showCover();
+            itemViewHolder.videoView.showCover();
+        }
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        int snapPosition = layoutManager.findSnapPosition();
+        if (snapPosition >= 0) {
+            releaseVideo(snapPosition);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int snapPosition = layoutManager.findSnapPosition();
+        if (snapPosition >= 0) {
+            playVideo(snapPosition);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     class MyAdapter extends RecyclerView.Adapter {
 

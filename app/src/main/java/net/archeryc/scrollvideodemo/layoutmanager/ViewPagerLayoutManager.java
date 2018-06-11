@@ -104,6 +104,20 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
     }
 
     /**
+     * if return >= 0 snap is exist
+     * if return < 0 snap is not exist
+     * @return
+     */
+    public int findSnapPosition(){
+        View viewIdle = mPagerSnapHelper.findSnapView(this);
+        if (viewIdle != null) {
+            return getPosition(viewIdle);
+        }else{
+            return -1;
+        }
+    }
+
+    /**
      * 设置监听
      *
      * @param listener

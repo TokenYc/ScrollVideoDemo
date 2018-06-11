@@ -210,7 +210,8 @@ public class QfVideoView extends FrameLayout implements TextureView.SurfaceTextu
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 //        reset();
-//        release();
+        //windown中移除时释放视频资源
+        release();
     }
 
     @Override
