@@ -15,7 +15,6 @@
         android:text="viewpager实现" />
 
 
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,16 +39,18 @@
         android:onClick="jumpQFRecycler"
         android:text="qf recyclerView实现" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="jumpGSYRecycler"
-        android:text="gsy recyclerView 实现" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="自定义layoutManager实现"
         android:onClick="jumpLayoutManager"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="点赞效果测试"
+        android:onClick="jumpLikeView"
         />
 </LinearLayout>

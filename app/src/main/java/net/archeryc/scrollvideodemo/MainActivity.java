@@ -69,4 +69,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LayoutManagerActivity.class);
         startActivity(intent);
     }
+
+    public void jumpLikeView(View view) {
+        Intent intent = new Intent(this, LikeViewActivity.class);
+        startActivity(intent);
+    }
 }

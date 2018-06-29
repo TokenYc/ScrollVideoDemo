@@ -30,7 +30,8 @@
         <activity android:name=".SingleQFActivity" />
         <activity android:name=".QFRecyclerActivity" />
         <activity android:name=".SingleIJKActivity" />
-        <activity android:name=".LayoutManagerActivity"></activity>
+        <activity android:name=".LayoutManagerActivity" />
+        <activity android:name=".LikeViewActivity"></activity>
     </application>
 
 </manifest>
