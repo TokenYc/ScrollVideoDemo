@@ -1,6 +1,7 @@
 package net.archeryc.scrollvideodemo.widget;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -118,7 +119,6 @@ public class LikeView extends View {
     }
 
     public void setInnerRadius(float innerRadius) {
-        invalidate();
         this.innerRadius = innerRadius;
     }
 
@@ -127,7 +127,6 @@ public class LikeView extends View {
     }
 
     public void setOuterRadius(float outerRadius) {
-        invalidate();
         this.outerRadius = outerRadius;
     }
 
@@ -146,7 +145,6 @@ public class LikeView extends View {
 
     public void setMotherRadius(float motherRadius) {
         this.motherRadius = motherRadius;
-        invalidate();
     }
 
     public float getBitmapScale() {
@@ -173,6 +171,7 @@ public class LikeView extends View {
         mLikeMatrix.postScale(bitmapScale, bitmapScale, getWidth() / 2, getWidth() / 2);
         mLikeMatrix.postRotate(bitmapRotation, getWidth() / 2, getWidth() / 2);
         this.bitmapRotation = bitmapRotation;
+        invalidate();
     }
 
     @Override
@@ -263,7 +262,7 @@ public class LikeView extends View {
 
         ObjectAnimator motherCircleAnimator = ObjectAnimator.ofFloat(this, "motherRadius",
                 0, mMaxMotherRadius)
-                .setDuration(400);
+                .setDuration(300);
         motherCircleAnimator.setInterpolator(new LinearInterpolator());
         motherCircleAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -274,25 +273,32 @@ public class LikeView extends View {
             public void onAnimationEnd(Animator animation) {
                 ObjectAnimator innerCircleAnimator = ObjectAnimator.ofFloat(LikeView.this, "innerRadius",
                         mMaxInnerRadius, mMaxInnerRadius * 0.6f)
-                        .setDuration(300);
+                        .setDuration(200);
                 innerCircleAnimator.setInterpolator(new LinearInterpolator());
-                innerCircleAnimator.start();
+
+                ObjectAnimator innerBiggerCircleAnimator = ObjectAnimator.ofFloat(LikeView.this, "innerRadius",
+                        mMaxInnerRadius * 0.6f, mMaxInnerRadius * 0.65f)
+                        .setDuration(300);
+                innerBiggerCircleAnimator.setInterpolator(new LinearInterpolator());
+                AnimatorSet innerAnimatorSet = new AnimatorSet();
+                innerAnimatorSet.playSequentially(innerCircleAnimator,innerBiggerCircleAnimator);
+                innerAnimatorSet.start();
 
                 ObjectAnimator outerAnimator = ObjectAnimator.ofFloat(LikeView.this,
                         "outerRadius", mMaxInnerRadius + mMaxOuterCircleStrokeWidth * 0.5f, mMaxOuterRadius)
-                        .setDuration(300);
+                        .setDuration(200);
                 outerAnimator.setInterpolator(new LinearInterpolator());
                 outerAnimator.start();
 
                 ObjectAnimator strokeAnimator = ObjectAnimator.ofFloat(LikeView.this, "progress",
                         0f, mMaxProgress)
-                        .setDuration(300);
+                        .setDuration(200);
                 strokeAnimator.setInterpolator(new LinearInterpolator());
                 strokeAnimator.start();
 
                 ObjectAnimator outerStrokeAnimator = ObjectAnimator.ofFloat(LikeView.this,
                         "outerCircleStrokeWidth", mMaxOuterCircleStrokeWidth, 0)
-                        .setDuration(300);
+                        .setDuration(200);
                 strokeAnimator.setInterpolator(new LinearInterpolator());
                 outerStrokeAnimator.start();
             }
@@ -310,13 +316,26 @@ public class LikeView extends View {
         motherCircleAnimator.start();
         ObjectAnimator bitmapScaleAnimator = ObjectAnimator.ofFloat(LikeView.this,
                 "bitmapScale", 0f, mMaxInnerRadius * 0.6f * 0.6f / (mBitmapLike.getWidth() / 2f))
-                .setDuration(400);
+                .setDuration(200);
         bitmapScaleAnimator.start();
-        ObjectAnimator bitmapRotationAnimator = ObjectAnimator.ofFloat(LikeView.this,
-                "bitmapRotation", 30, -30, 0);
-        bitmapRotationAnimator.setDuration(400);
-        bitmapRotationAnimator.setStartDelay(300);
-        bitmapRotationAnimator.start();
+
+        setBitmapRotation(10);
+        ObjectAnimator bitmapRotationRightAnimator = ObjectAnimator.ofFloat(LikeView.this,
+                "bitmapRotation", 10, 20);
+        bitmapRotationRightAnimator.setDuration(280);
+        bitmapRotationRightAnimator.setInterpolator(new LinearInterpolator());
+        ObjectAnimator bitmapRotationLeftAnimator = ObjectAnimator.ofFloat(LikeView.this,
+                "bitmapRotation", 20, -6);
+        bitmapRotationLeftAnimator.setDuration(220);
+        bitmapRotationLeftAnimator.setInterpolator(new LinearInterpolator());
+
+        ObjectAnimator bitmapRotationCenterAnimator = ObjectAnimator.ofFloat(LikeView.this,
+                "bitmapRotation", -15, 0);
+        bitmapRotationCenterAnimator.setDuration(300);
+        AnimatorSet bitmapAnimatorSet = new AnimatorSet();
+        bitmapAnimatorSet.playSequentially(bitmapRotationRightAnimator,
+                bitmapRotationLeftAnimator, bitmapRotationCenterAnimator);
+        bitmapAnimatorSet.start();
 
     }
 
